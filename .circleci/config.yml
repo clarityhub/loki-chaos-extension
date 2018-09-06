@@ -53,7 +53,7 @@ jobs:
       - run: npm run build
     
       - store_artifacts:
-          path: ~/repos/build/chrome.zip
+          path: ~/repo/build/chrome.zip
           destination: chrome.zip
 
 workflows:
