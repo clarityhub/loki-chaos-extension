@@ -1,0 +1,66 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  test:
+    docker:
+      - image: node:8
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run test
+
+  build_chrome:
+    docker:
+      - image: node:8
+    environment:
+      EXT_BUILD: CHROME
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: npm run build
+    
+      - store_artifacts:
+          path: ~/repos/build/chrome.zip
+          destination: chrome.zip
+
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+      - test
+      - build_chrome:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+
+
