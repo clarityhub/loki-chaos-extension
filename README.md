@@ -14,3 +14,7 @@ By [Clarity Hub](https://www.clarityhub.io/).
 3. Go to the "Chaos" tab.
 4. Set your global settings
 5. Inject into the page or select Inject on Load to automatically inject into the page next time you refresh.
+
+## Roadmap
+
+You can see a rough idea of the roadmap by checking the [Milestones](https://github.com/clarityhub/loki-chaos-extension/milestones) section of this repo.
