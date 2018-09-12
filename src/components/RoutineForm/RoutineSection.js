@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { any, arrayOf, func, object, shape, string } from 'prop-types';
 import Slider from '@material-ui/lab/Slider';
+import Switch from '@material-ui/core/Switch';
 import styled from 'react-emotion';
+import { css } from 'emotion';
 
 import {
   Text,
   Heading,
 } from '../Styled';
+import colors from '../Styled/colors';
 
 const Container = styled.div`
   border-top: 1px solid #ebebeb;
@@ -58,7 +61,15 @@ export default class RoutineSection extends Component {
       switch (control.type) {
         case 'checkbox':
           return (
-            <input
+            <Switch
+              classes={{
+                bar: css({
+                  backgroundColor: `${colors.primary}!important`,
+                }),
+                checked: css({
+                  color: `${colors.primary}!important`,
+                }),
+              }}
               name={control.name}
               type="checkbox"
               onChange={(e) => onFormChanged(e, routine)}
@@ -68,6 +79,14 @@ export default class RoutineSection extends Component {
         case 'slider':
           return (
             <Slider
+              classes={{
+                track: css({
+                  backgroundColor: `${colors.primary}!important`,
+                }),
+                thumb: css({
+                  backgroundColor: `${colors.primary}!important`,
+                }),
+              }}
               min={control.min * 100 || 0}
               max={control.max * 100 || 100}
               step={control.step * 100 || 10}
