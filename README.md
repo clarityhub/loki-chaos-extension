@@ -1,7 +1,8 @@
 # Loki Chaos Extension
 
-[![CircleCI](https://circleci.com/gh/clarityhub/loki-chaos-extension/tree/master.svg?style=svg&circle-token=1796511a9f41b4ee68ea7dffc710063164b1941e)](https://circleci.com/gh/clarityhub/loki-chaos-extension/tree/master) 
-[![GitHub](https://img.shields.io/github/license/clarityhub/loki-chaos-extension.svg?style=flat-square)](https://github.com/clarityhub/loki-chaos-extension/blob/master/LICENSE)
+[![CircleCI](https://circleci.com/gh/clarityhub/loki-chaos-extension/tree/master.svg?style=svg&circle-token=1796511a9f41b4ee68ea7dffc710063164b1941e)](https://circleci.com/gh/clarityhub/loki-chaos-extension/tree/master) [![GitHub](https://img.shields.io/github/license/clarityhub/loki-chaos-extension.svg?style=flat-square)](https://github.com/clarityhub/loki-chaos-extension/blob/master/LICENSE)
+
+[![Chrome Web Store](./etc/chromeWebStore.png)](https://chrome.google.com/webstore/detail/loki-chaos-extension-by-c/oidanhdkoegejnkbcndbplhjjkcjfoob)
 
 The Loki Chaos Extension is a Google Chrome and (coming soon) Firefox plugin that allows you to check your error handling and text localization for any site, whether it's a SPA or not.
 

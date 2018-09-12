@@ -55,12 +55,9 @@ export default async () => {
   const storage = Facades.Storage;
   const browser = Facades.Browser;
 
-  console.log(SETTINGS_KEY);
-
   const settings = await storage.get(SETTINGS_KEY);
   const origin = await browser.getDevToolsTabOrigin();
 
-  console.log(settings);
   // Initialize react app
   render(
     <Panel
