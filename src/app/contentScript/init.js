@@ -4,10 +4,6 @@ import { SETTINGS_KEY } from 'constants/storage';
 import injectScript from './injectScript';
 import sendSettings from './sendSettings';
 
-// XXX Need to some how inject even SOONER
-// since fetch's run on app start are not
-// being
-
 /**
  * Auto-inject if the user has added this location to the auto-inject list.
  *
