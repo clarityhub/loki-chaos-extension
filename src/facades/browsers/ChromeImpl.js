@@ -20,7 +20,7 @@ export default class Chrome {
   }
 
   getScriptUrl = (key) => {
-    return chrome.extension.getURL(key);
+    return chrome.runtime.getURL(key);
   }
 
   createWindow = (url, options) => {

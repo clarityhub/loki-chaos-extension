@@ -1,3 +1,5 @@
+import get from 'lodash.get';
+
 import mutate from 'overrides/text/mutate';
 
 const config = {
@@ -25,57 +27,65 @@ const doMutation = (textNode) => {
   }
 };
 
-function localization(settings) {
-  const { on } = settings;
+function localization(settings$) {
+  let observer;
 
-  const callback = (mutationsList) => {
-    mutationsList.forEach(mutation => {
-      if (mutation.type === 'characterData') {
-        doMutation(mutation.target);
-      }
+  settings$.take((settings) => {
+    // Clear old
+    if (observer) {
+      observer.disconnect();
+    }
 
-      if (mutation.type === 'childList') {
-        if (mutation.addedNodes.length > 0) {
-          Array.from(mutation.addedNodes).forEach(node => {
-            const textNodes = textNodesUnder(node);
+    const on = get(settings, 'routines.localization.on', false);
 
-            textNodes.forEach(textNode => {
-              doMutation(textNode);
-            });
-          });
+    const callback = (mutationsList) => {
+      mutationsList.forEach(mutation => {
+        if (mutation.type === 'characterData') {
+          doMutation(mutation.target);
         }
-      }
-    });
-  };
 
-  if (on) {
-    const doListen = () => {
-      const observer = new MutationObserver(callback);
-      observer.observe(document.getElementsByTagName('body')[0], config);
+        if (mutation.type === 'childList') {
+          if (mutation.addedNodes.length > 0) {
+            Array.from(mutation.addedNodes).forEach(node => {
+              const textNodes = textNodesUnder(node);
 
-      const textNodes = textNodesUnder(document.getElementsByTagName('body')[0]);
-
-      textNodes.forEach(textNode => {
-        doMutation(textNode);
+              textNodes.forEach(textNode => {
+                doMutation(textNode);
+              });
+            });
+          }
+        }
       });
     };
 
-    if (document.getElementsByTagName('body')[0]) {
-      doListen();
-    } else {
-      window.addEventListener('DOMContentLoaded', () => {
+    if (on) {
+      const doListen = () => {
+        observer = new MutationObserver(callback);
+        observer.observe(document.getElementsByTagName('body')[0], config);
+
+        const textNodes = textNodesUnder(document.getElementsByTagName('body')[0]);
+
+        textNodes.forEach(textNode => {
+          doMutation(textNode);
+        });
+      };
+
+      if (document.getElementsByTagName('body')[0]) {
         doListen();
-      });
+      } else {
+        window.addEventListener('DOMContentLoaded', doListen);
+      }
     }
-  }
+  });
 }
 
-localization.title = 'Psuedo-Localization';
-localization.description = `Mutate text to expand or contain glyphs`;
-localization.controls = [{
-  name: 'on',
-  type: 'checkbox',
-  default: false,
-}];
-
-export default localization;
+export default {
+  invoke: localization,
+  title: 'Psuedo-Localization',
+  description: 'Mutate text to expand or contain glyphs',
+  controls: [{
+    name: 'on',
+    type: 'checkbox',
+    default: false,
+  }],
+};
