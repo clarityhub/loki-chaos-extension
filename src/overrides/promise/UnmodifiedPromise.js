@@ -1,5 +1,3 @@
-import get from 'lodash.get';
-
 import promiseFinally from './finally';
 
 // Store setTimeout reference so promise-polyfill will be unaffected by
@@ -133,24 +131,6 @@ function doResolve(fn, self) {
   try {
     fn(
       function (value) {
-        Promise.delay.whenReady((settings) => {
-          const timeoutRate = get(settings, ['routines', 'promise.timeout', 'chaos'], 0);
-          const failRate = get(settings, ['routines', 'promise.throw', 'chaos'], 0);
-
-          // TODO add a hook so that this code can live in promise.timeout
-          if (self.timedOut || Math.random() < timeoutRate) {
-            self.timedOut = true;
-            return;
-          }
-
-          // TODO add a hook so that this code can live in promise.throw
-          if (Math.random() < failRate) {
-            if (done) return;
-            done = true;
-            reject(self, 'Chaos Extension');
-          }
-        });
-
         if (done) return;
         done = true;
         resolve(self, value);

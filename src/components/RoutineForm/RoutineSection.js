@@ -119,6 +119,7 @@ export default class RoutineSection extends Component {
 
   render() {
     const { routine } = this.props;
+
     return (
       <Container>
         <Left>

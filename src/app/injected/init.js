@@ -1,22 +1,35 @@
-import logging from 'logging';
 import routines from 'routines';
 
-logging.setup();
-
-export default () => {
-  const el = Array.from(document.getElementsByClassName('clarityhub-chaos-extension'));
-  const raw = el[el.length - 1].innerHTML;
-  try {
-    const data = JSON.parse(raw);
-
-    Object.keys(data.routines).forEach((key) => {
-      const settings = data.routines[key];
-
-      if (routines[key]) {
-        routines[key](settings);
-      }
-    });
-  } catch (error) {
-    logging.report(error);
+/**
+ * Fake observable pattern
+ */
+class Observable {
+  constructor() {
+    this.listeners = [];
   }
-};
+
+  take(func) {
+    this.listeners.push(func);
+  }
+
+  next(data) {
+    this.listeners.forEach(f => f(data));
+  }
+}
+
+const settings$ = new Observable();
+
+// Set up every routine
+Object.keys(routines).forEach(key => {
+  routines[key].invoke(settings$);
+});
+
+// Check for initial settings
+if (window.__chceSettings) {
+  settings$.next(window.__chceSettings);
+}
+
+// Listen for settings
+window.addEventListener('chce-settings', (event) => {
+  settings$.next(JSON.parse(event.detail));
+});

@@ -2,6 +2,7 @@ import Facades from 'facades';
 import { SETTINGS_KEY } from 'constants/storage';
 
 import injectScript from './injectScript';
+import sendSettings from './sendSettings';
 
 /**
  * Auto-inject if the user has added this location to the auto-inject list.
@@ -14,16 +15,20 @@ export default async () => {
   const listeners = Facades.Listeners;
 
   const url = browser.getScriptUrl('injected.js');
-  const settings = await storage.get(SETTINGS_KEY);
 
+  injectScript(url);
+
+  const settings = await storage.get(SETTINGS_KEY);
   const shouldAutoInject = settings.autoInject.indexOf(window.location.origin) !== -1;
 
   if (shouldAutoInject) {
-    injectScript(url, settings);
+    sendSettings(settings);
+  } else {
+    sendSettings({});
   }
 
   listeners.listen('inject', async () => {
     const settings = await storage.get(SETTINGS_KEY);
-    injectScript(url, settings);
+    sendSettings(settings);
   });
 };
