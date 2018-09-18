@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    Test Server
+    <script src="/assets/injected.js"></script>
+</head>
+<body>
+    <script>
+        window.results = {
+
+        };
+        
+        fetch('/api/test').then(() => {
+            window.results.fetch = 'completed';
+        }).catch(() => {
+            window.results.fetch = 'failed';
+        });
+
+        Promise.resolve(5).then(() => {
+            window.results.promise = 'completed';
+        }).catch(() => {
+            window.results.promise = 'failed';
+        });
+    </script>
+</body>
+</html>
